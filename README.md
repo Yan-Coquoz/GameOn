@@ -12,6 +12,7 @@
 
 Le formulaire doit être valide quand l'utilisateur clique sur "Submit"
 Les données doivent être saisies correctement :
+
 - (1) Le champ Prénom a un minimum de 2 caractères / n'est pas vide.
 - (2) Le champ du nom de famille a un minimum de 2 caractères / n'est pas vide.
 - (3) L'adresse électronique est valide.
@@ -21,8 +22,7 @@ Les données doivent être saisies correctement :
 
 - Conserver les données du formulaire (ne pas effacer le formulaire) lorsqu'il ne passe pas la validation.
 
-
-## Validation et message d'erreurs
+## *Validation et message d'erreurs*
 
 "Veuillez entrer 2 caractères ou plus pour le champ du nom."
 "Vous devez choisir une option."
@@ -35,6 +35,6 @@ Après une validation réussie, inclure un message de confirmation de la soumiss
 
 ## Tests manuels
 
-- Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop. 
+- Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop.
 - Corriger les erreurs d'affichage existantes.
 Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes)

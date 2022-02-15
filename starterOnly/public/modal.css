@@ -67,6 +67,9 @@ img {
 .topnav .icon {
   display: none;
 }
+.errorMsg {
+  font-size: 0.8rem;
+}
 
 @media screen and (max-width: 768px) {
   .topnav a {
