@@ -17,17 +17,17 @@ Les données doivent être saisies correctement :
 - (2) Le champ du nom de famille a un minimum de 2 caractères / n'est pas vide. ✔
 - (3) L'adresse électronique est valide. ✔
 - (4) Pour le nombre de concours, une valeur numérique est saisie.
-- (5) Un bouton radio est sélectionné.
+- (5) Un bouton radio est sélectionné. ✔
 - (6) La case des conditions générales est cochée, l'autre case est facultative / peut être laissée décochée.
 
 - Conserver les données du formulaire (ne pas effacer le formulaire) lorsqu'il ne passe pas la validation.
 
 ## *Validation et message d'erreurs*
 
-- "Veuillez entrer 2 caractères ou plus pour le champ du nom."
-- "Vous devez choisir une option."
-- "Vous devez vérifier que vous acceptez les termes et conditions."
-- "Vous devez entrer votre date de naissance."
+- "Veuillez entrer 2 caractères ou plus pour le champ du nom." ✔
+- "Vous devez choisir une option." ✔
+- "Vous devez vérifier que vous acceptez les termes et conditions." ✔
+- "Vous devez entrer votre date de naissance." ✔
 
 ## Après la validation
 

@@ -7,8 +7,24 @@ function editNav() {
   }
 }
 
+/**
+ * TODO pour chaque messages d'erreurs des fonction de check, envoyer un numero dans une fonction "wrongMsg" correspondant au numero de divFormData.
+ */
+/*
+TODO placé un timer sur le message d'erreur (environ 5sec)
+*/
+
+/**
+ * TODO refactoré
+ */
+
+/**
+ * TODO responsive
+ */
+
 // DOM Elements
 const modalbg = document.querySelector(".bground");
+const modalContent = document.querySelector(".content");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const divFormData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelector(".close");
@@ -18,10 +34,23 @@ const prenom = document.querySelector("#first");
 const nom = document.querySelector("#last");
 const email = document.querySelector("#email");
 const naissance = document.querySelector("#birthdate");
+const nbgames = document.querySelector("#quantity");
 const sendError = document.createElement("span");
 sendError.classList.add("errorMsg");
 sendError.style.color = "red";
 const formValidation = [];
+
+function validationMessage() {
+  const message = document.createElement("p");
+  message.textContent = "Merci ! Votre réservation a été reçue.";
+  message.classList.add("message");
+  const btn = document.createElement("button");
+  btn.textContent = "Fermer";
+  btn.classList.add("button");
+  modalContent.appendChild(message);
+  modalContent.appendChild(btn);
+  btn.addEventListener("click", closeModal);
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -30,6 +59,7 @@ closeBtn.addEventListener("click", closeModal);
 // écoute du formulaire
 formulaire.addEventListener("submit", (evt) => {
   evt.preventDefault();
+  clearForm();
   myForm();
 });
 
@@ -41,13 +71,23 @@ function launchModal() {
 function closeModal() {
   modalbg.style.display = "none";
 }
+
+function clearForm() {
+  // supprime toutes les valeurs du tableaux
+  formValidation.length = 0;
+  // nettoye les messages d'erreur
+  sendError.textContent = "";
+}
+
 /* reccupere les données du formulaire */
 function myForm() {
   const validPrenom = checkLength(prenom.value);
   const validNom = checkLength(nom.value);
   const validEmail = checkEmail(email.value);
-  checkBirth(naissance.value);
-
+  checkBirthDate(naissance.value);
+  checkRadio();
+  checkCheckbox();
+  nbChallenge();
   if (typeof validPrenom === "string") {
     sendError.textContent = validPrenom;
     divFormData[0].append(sendError);
@@ -66,6 +106,7 @@ function myForm() {
   } else {
     formValidation.push(validEmail);
   }
+  checkFormValidation();
 }
 
 /**
@@ -104,12 +145,60 @@ function checkEmail(inputValue) {
  * @param {string} inputValue - valeur envoyer de l'input
  * @returns  {string} en cas d'erreur
  */
-function checkBirth(inputValue) {
+function checkBirthDate(inputValue) {
   if (inputValue.length === 0) {
     sendError.textContent = "Vous devez entrer votre date de naissance.";
     return divFormData[3].append(sendError);
   } else {
-    const validNaissance = true;
-    formValidation.push(validNaissance);
+    formValidation.push(true);
+  }
+}
+/**
+ * @returns true | {string} en cas d'erreur
+ */
+function checkRadio() {
+  const allRadios = document.querySelectorAll('input[name="location"]');
+  const disables = [];
+  for (const key in allRadios) {
+    const element = allRadios[key].checked;
+    if (element) {
+      formValidation.push(true);
+    } else {
+      disables.push(element);
+    }
+  }
+  if (disables.length === 12) {
+    sendError.textContent = "Vous devez choisir une option.";
+    return divFormData[5].append(sendError);
+  }
+}
+function nbChallenge() {
+  const goodValue = Number(nbgames.value);
+
+  if (typeof goodValue === "number") {
+    formValidation.push(true);
+  } else {
+    sendError.textContent = "Vous devez choisir une valeur numérique.";
+    return divFormData[4].append(sendError);
+  }
+}
+
+function checkCheckbox() {
+  if (document.querySelector("#checkbox1").checked) {
+    formValidation.push(true);
+  } else {
+    sendError.textContent =
+      "Vous devez vérifier que vous acceptez les termes et conditions.";
+    return divFormData[6].append(sendError);
+  }
+}
+function checkFormValidation() {
+  if (formValidation.length === 7) {
+    // je supprime le formulaire s'il remplit les conditions
+    formulaire.innerHTML = "";
+    // voir removeChild()
+    validationMessage();
+  } else {
+    console.log("on recommence");
   }
 }
