@@ -42,14 +42,23 @@ const formValidation = [];
 
 function validationMessage() {
   const message = document.createElement("p");
-  message.textContent = "Merci ! Votre réservation a été reçue.";
+  message.innerHTML = "Merci !<br> Votre réservation a été reçue.";
+  message.style.textAlign = "center";
   message.classList.add("message");
   const btn = document.createElement("button");
   btn.textContent = "Fermer";
   btn.classList.add("button");
+  modalContent.style.display = "flex";
+  modalContent.style.flexDirection = "column";
+  modalContent.style.justifyContent = "space-between";
+  modalContent.style.alignItems = "center";
+  modalContent.style.height = "80vh";
   modalContent.appendChild(message);
   modalContent.appendChild(btn);
+  btn.style.marginBottom = "1rem";
+  btn.style.padding = "1rem 4rem";
   btn.addEventListener("click", closeModal);
+  clearForm();
 }
 
 // launch modal event
