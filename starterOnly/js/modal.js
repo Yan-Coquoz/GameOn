@@ -8,19 +8,14 @@ function editNav() {
 }
 
 /**
+ * TODO refactoré
+ */
+/**
  * TODO pour chaque messages d'erreurs des fonction de check, envoyer un numero dans une fonction "wrongMsg" correspondant au numero de divFormData.
  */
 /*
 TODO placé un timer sur le message d'erreur (environ 5sec)
 */
-
-/**
- * TODO refactoré
- */
-
-/**
- * TODO responsive
- */
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
@@ -40,36 +35,26 @@ sendError.classList.add("errorMsg");
 sendError.style.color = "red";
 const formValidation = [];
 
-function validationMessage() {
-  const message = document.createElement("p");
-  message.innerHTML = "Merci !<br> Votre réservation a été reçue.";
-  message.style.textAlign = "center";
-  message.classList.add("message");
-  const btn = document.createElement("button");
-  btn.textContent = "Fermer";
-  btn.classList.add("button");
-  modalContent.style.display = "flex";
-  modalContent.style.flexDirection = "column";
-  modalContent.style.justifyContent = "space-between";
-  modalContent.style.alignItems = "center";
-  modalContent.style.height = "80vh";
-  modalContent.appendChild(message);
-  modalContent.appendChild(btn);
-  btn.style.marginBottom = "1rem";
-  btn.style.padding = "1rem 4rem";
-  btn.addEventListener("click", closeModal);
-  clearForm();
-}
-
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // close modal event
 closeBtn.addEventListener("click", closeModal);
 // écoute du formulaire
 formulaire.addEventListener("submit", (evt) => {
+  // arreter le comportement par defaut du bouton type submit
   evt.preventDefault();
+  // je nettoie les valeurs du formulaires (si il y a eu des erreurs)
   clearForm();
-  myForm();
+  myForm(evt);
+});
+prenom.addEventListener("input", (evt) => {
+  checkName(evt);
+});
+nom.addEventListener("input", (evt) => {
+  checkName(evt);
+});
+email.addEventListener("input", (evt) => {
+  checkEmail(evt);
 });
 
 // launch modal form
@@ -90,31 +75,10 @@ function clearForm() {
 
 /* reccupere les données du formulaire */
 function myForm() {
-  const validPrenom = checkLength(prenom.value);
-  const validNom = checkLength(nom.value);
-  const validEmail = checkEmail(email.value);
   checkBirthDate(naissance.value);
   checkRadio();
   checkCheckbox();
   nbChallenge();
-  if (typeof validPrenom === "string") {
-    sendError.textContent = validPrenom;
-    divFormData[0].append(sendError);
-  } else {
-    formValidation.push(validPrenom);
-  }
-  if (typeof validNom === "string") {
-    sendError.textContent = validNom;
-    divFormData[1].append(sendError);
-  } else {
-    formValidation.push(validNom);
-  }
-  if (typeof validEmail === "string") {
-    sendError.textContent = validEmail;
-    divFormData[2].append(sendError);
-  } else {
-    formValidation.push(validEmail);
-  }
   checkFormValidation();
 }
 
@@ -122,18 +86,23 @@ function myForm() {
  * @param {string} inputValue - valeur envoyer de l'input
  * @returns true | {string} en cas d'erreur
  */
-function checkLength(inputValue) {
-  let wronglength =
+function checkName(inputValue) {
+  sendError.textContent =
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
-  if (inputValue.length >= 2) {
-    if (/[?:0-9]/.test(inputValue)) {
-      wronglength = "Le nom ne doit pas contenir de nombre";
-      return wronglength;
-    } else {
-      return true;
-    }
+  /* 
+    [A-Z]= tout ce qui est alphabétique
+    {2,25}= doit contenir entre 2 et 25 caractères
+    gi = global et case insensitive 
+    */
+  if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
+    clearForm();
+    return true;
   } else {
-    return wronglength;
+    if (inputValue.target.id === "first") {
+      return divFormData[0].append(sendError);
+    } else {
+      return divFormData[1].append(sendError);
+    }
   }
 }
 
@@ -142,11 +111,12 @@ function checkLength(inputValue) {
  * @returns true | {string} en cas d'erreur
  */
 function checkEmail(inputValue) {
-  const wrongContent = "Veuillez enter une adresse email valide";
-  if (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim.test(inputValue)) {
+  sendError.textContent = "Veuillez enter une adresse email valide";
+  if (/[A-Z0-9._%+-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
+    clearForm();
     return true;
   } else {
-    return wrongContent;
+    return divFormData[2].append(sendError);
   }
 }
 
@@ -207,7 +177,34 @@ function checkFormValidation() {
     formulaire.innerHTML = "";
     // voir removeChild()
     validationMessage();
-  } else {
-    console.log("on recommence");
   }
+}
+function validationMessage() {
+  // creation d'element du DOM :
+  // balise <p>
+  const message = document.createElement("p");
+  // balise <button>
+  const btn = document.createElement("button");
+  // creation / placement du texte de confirmation
+  message.innerHTML = "Merci !<br> Votre réservation a été reçue.";
+  message.style.textAlign = "center";
+  // ajout d'une classe
+  message.classList.add("message");
+  // ajout du texte du bouton et d'une classe
+  btn.textContent = "Fermer";
+  btn.classList.add("button");
+  // style de la modale
+  modalContent.style.display = "flex";
+  modalContent.style.flexDirection = "column";
+  modalContent.style.justifyContent = "space-between";
+  modalContent.style.alignItems = "center";
+  modalContent.style.height = "80vh";
+  // ajout de style sur le bouton
+  btn.style.marginBottom = "1rem";
+  btn.style.padding = "1rem 4rem";
+  // placement des elements
+  modalContent.appendChild(message);
+  modalContent.appendChild(btn);
+  // écoute du bouton
+  btn.addEventListener("click", closeModal);
 }

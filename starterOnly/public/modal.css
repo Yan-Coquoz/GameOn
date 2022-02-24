@@ -27,6 +27,8 @@ p {
 
 img {
   padding-right: 1rem;
+  height: auto;
+  width: 100%;
 }
 
 .topnav {
@@ -436,7 +438,7 @@ input {
   display: none;
 }
 /* modale de confirmation */
-/* .content-confirm {
+.content-confirm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -447,14 +449,14 @@ input {
 .message {
   text-align: center;
   width: 60%;
-} */
+}
 
 footer {
   padding-left: 2vw;
   padding-right: 2vw;
   margin: 0 20px;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 965px) {
   .hero-section {
     display: block;
     box-shadow: unset;
@@ -558,6 +560,12 @@ footer {
   }
   .hero-img img {
     margin-top: 0;
+  }
+  .hero-section {
+    min-height: 0;
+  }
+  .copyrights {
+    margin-top: 25px;
   }
 }
 /* Arrivée de la modale */
