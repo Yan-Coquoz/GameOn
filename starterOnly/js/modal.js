@@ -20,11 +20,13 @@ const nom = document.querySelector("#last");
 const email = document.querySelector("#email");
 const naissance = document.querySelector("#birthdate");
 const allRadios = document.querySelectorAll('input[name="location"]');
-const nbgames = document.querySelector("#quantity");
+const cgu = document.querySelector("#checkbox1");
+const nbGame = document.querySelector("#quantity");
+
+const formValidations = [];
 const sendError = document.createElement("span");
 sendError.classList.add("errorMsg");
 sendError.style.color = "red";
-const formValidation = [];
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -36,7 +38,7 @@ formulaire.addEventListener("submit", (evt) => {
   evt.preventDefault();
   // je nettoie les valeurs du formulaires (si il y a eu des erreurs)
   clearForm("error");
-  myForm();
+  checkFormValidation();
 });
 prenom.addEventListener("input", (evt) => {
   checkName(evt);
@@ -50,12 +52,17 @@ email.addEventListener("input", (evt) => {
 naissance.addEventListener("input", (evt) => {
   checkBirthDate(evt);
 });
+nbGame.addEventListener("input", (evt) => {
+  checkNbGame(evt);
+});
 allRadios.forEach((radio) =>
   radio.addEventListener("input", (evt) => checkRadio(evt)),
 );
+cgu.addEventListener("click", checkCGU);
 
 // launch modal form
 function launchModal() {
+  clearForm("all");
   modalbg.style.display = "block";
 }
 // close modal form
@@ -65,23 +72,19 @@ function closeModal() {
 
 function clearForm(value) {
   switch (value) {
-    case "all":
+    case "form":
       // supprime toutes les valeurs du tableaux
-      formValidation.length = 0;
+      formValidations.length = 0;
+      break;
+    case "error":
       // nettoye les messages d'erreur
       sendError.textContent = "";
       break;
-    case "form":
-      formValidation.length = 0;
-      break;
-    case "error":
+    case "all":
+      formValidations.length = 0;
       sendError.textContent = "";
       break;
   }
-}
-
-function myForm() {
-  checkFormValidation();
 }
 
 /**
@@ -93,14 +96,29 @@ function checkName(inputValue) {
   sendError.textContent =
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
   /* 
-    [A-Z]= tout ce qui est alphabétique
+    [A-Z] = tout ce qui est alphabétique
+    [0-9] = tout ce qui est numérique
     {2,25}= doit contenir entre 2 et 25 caractères
-    gi = global et case insensitive 
+    gi = global(la valeur complète) et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
     clearForm("error");
-    formValidation.push(inputValue.target.name);
+    if (!/[0-9]/.test(inputValue.target.value)) {
+      // si la condition est bonne, je supprime l'erreur
+      clearForm("error");
+      // je place dans le tableau la valeur de ce qui est valide
+      formValidations.push(inputValue.target.name);
+    } else {
+      if (inputValue.target.id === "first") {
+        const error = (sendError.textContent = " Pas de valeurs numérique");
+        return divFormData[0].appendChild(error);
+      } else if (inputValue.target.id === "last") {
+        const error = (sendError.textContent = " Et pas de valeurs numérique");
+        return divFormData[1].appendChild(error);
+      }
+    }
   } else {
+    // condition pour le placement du message d'erreur
     if (inputValue.target.id === "first") {
       return divFormData[0].append(sendError);
     } else {
@@ -118,7 +136,7 @@ function checkEmail(inputValue) {
 
   if (/[A-Z0-9._-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
     clearForm("error");
-    formValidation.push("email");
+    formValidations.push("email");
   } else {
     return divFormData[2].append(sendError);
   }
@@ -137,10 +155,21 @@ function checkBirthDate(inputValue) {
    */
   if (/^(19|20)\d\d+[-/.]+[0-9]+[-/.][0-9]/.test(inputValue.target.value)) {
     clearForm("error");
-    formValidation.push("date");
+    formValidations.push("date");
   } else {
     sendError.textContent = "Vous devez entrer votre date de naissance.";
     return divFormData[3].append(sendError);
+  }
+}
+
+function checkNbGame(evt) {
+  const goodValue = Number(evt.target.value);
+  console.log(typeof goodValue);
+  if (typeof goodValue === "number") {
+    formValidations.push("nbChallenge");
+  } else {
+    sendError.textContent = "Vous devez choisir une valeur numérique.";
+    return divFormData[4].append(sendError);
   }
 }
 
@@ -149,48 +178,42 @@ function checkBirthDate(inputValue) {
  * @returns  {string} en cas d'erreur
  */
 function checkRadio(evt = false) {
-  console.log(evt.target.checked);
-  if (evt.target.checked) {
-    console.log(evt.target.value);
-    formValidation.push(evt.target.checked);
-  } else {
-    console.log(evt);
+  if (!evt) {
     sendError.textContent = "Vous devez choisir une option.";
     return divFormData[5].append(sendError);
-  }
-}
-
-function nbChallenge() {
-  const goodValue = Number(nbgames.value);
-  if (typeof goodValue === "number") {
-    formValidation.push("nbChallenge");
-  } else {
-    sendError.textContent = "Vous devez choisir une valeur numérique.";
-    return divFormData[4].append(sendError);
+  } else if (evt.target.checked) {
+    formValidations.push(evt.target.checked);
   }
 }
 
 function checkCGU() {
-  if (document.querySelector("#checkbox1").checked) {
-    formValidation.push("cgu");
+  const labelCgu = document.querySelector("#cgu").nextSibling;
+
+  if (cgu.checked) {
+    clearForm("error");
+    formValidations.push("cgu");
   } else {
+    formValidations.pop("cgu");
+    sendError.style.display = "inline-blocK";
     sendError.textContent =
       "Vous devez vérifier que vous acceptez les termes et conditions.";
-    return divFormData[6].append(sendError);
+    return labelCgu.after(sendError);
   }
 }
 
 function checkFormValidation() {
-  for (let index = 0; index < formValidation.length; index++) {
-    console.log(`${formValidation[index]} => ${typeof formValidation[index]}`);
-  }
+  // for (let index = 0; index < formValidations.length; index++) {
+  //   console.log(
+  //     `${formValidations[index]} => ${typeof formValidations[index]}`,
+  //   );
+  // }
 
-  const ville = formValidation.includes(true);
-  const cgu = formValidation.includes("cgu");
-
+  // je check si les valeurs sont présente dans tableau des validations
+  const ville = formValidations.includes(true);
+  const cgu = formValidations.includes("cgu");
+  // si elles ne sont pas présentes,
   if (!ville) {
-    sendError.textContent = "Vous devez choisir une option.";
-    return divFormData[5].append(sendError);
+    checkRadio();
   }
   if (!cgu) {
     checkCGU();
@@ -198,6 +221,9 @@ function checkFormValidation() {
   if (cgu && ville) {
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
+    // je vide le tabeau des validation et efface les MSGs d'erreur
+    clearForm("all");
+    // MSG de validation de formulaire
     validationMessage();
   }
 }
