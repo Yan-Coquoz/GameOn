@@ -7,16 +7,6 @@ function editNav() {
   }
 }
 
-/**
- * TODO refactoré
- */
-/**
- * TODO pour chaque messages d'erreurs des fonction de check, envoyer un numero dans une fonction "wrongMsg" correspondant au numero de divFormData.
- */
-/*
-TODO placé un timer sur le message d'erreur (environ 5sec)
-*/
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalContent = document.querySelector(".content");
@@ -29,6 +19,7 @@ const prenom = document.querySelector("#first");
 const nom = document.querySelector("#last");
 const email = document.querySelector("#email");
 const naissance = document.querySelector("#birthdate");
+const allRadios = document.querySelectorAll('input[name="location"]');
 const nbgames = document.querySelector("#quantity");
 const sendError = document.createElement("span");
 sendError.classList.add("errorMsg");
@@ -44,8 +35,8 @@ formulaire.addEventListener("submit", (evt) => {
   // arreter le comportement par defaut du bouton type submit
   evt.preventDefault();
   // je nettoie les valeurs du formulaires (si il y a eu des erreurs)
-  clearForm();
-  myForm(evt);
+  clearForm("error");
+  myForm();
 });
 prenom.addEventListener("input", (evt) => {
   checkName(evt);
@@ -56,6 +47,12 @@ nom.addEventListener("input", (evt) => {
 email.addEventListener("input", (evt) => {
   checkEmail(evt);
 });
+naissance.addEventListener("input", (evt) => {
+  checkBirthDate(evt);
+});
+allRadios.forEach((radio) =>
+  radio.addEventListener("input", (evt) => checkRadio(evt)),
+);
 
 // launch modal form
 function launchModal() {
@@ -66,27 +63,33 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-function clearForm() {
-  // supprime toutes les valeurs du tableaux
-  formValidation.length = 0;
-  // nettoye les messages d'erreur
-  sendError.textContent = "";
+function clearForm(value) {
+  switch (value) {
+    case "all":
+      // supprime toutes les valeurs du tableaux
+      formValidation.length = 0;
+      // nettoye les messages d'erreur
+      sendError.textContent = "";
+      break;
+    case "form":
+      formValidation.length = 0;
+      break;
+    case "error":
+      sendError.textContent = "";
+      break;
+  }
 }
 
-/* reccupere les données du formulaire */
 function myForm() {
-  checkBirthDate(naissance.value);
-  checkRadio();
-  checkCheckbox();
-  nbChallenge();
   checkFormValidation();
 }
 
 /**
  * @param {string} inputValue - valeur envoyer de l'input
- * @returns true | {string} en cas d'erreur
+ * @returns {string} en cas d'erreur
  */
 function checkName(inputValue) {
+  // console.log(inputValue.target.name);
   sendError.textContent =
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
   /* 
@@ -95,8 +98,8 @@ function checkName(inputValue) {
     gi = global et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
-    clearForm();
-    return true;
+    clearForm("error");
+    formValidation.push(inputValue.target.name);
   } else {
     if (inputValue.target.id === "first") {
       return divFormData[0].append(sendError);
@@ -108,13 +111,14 @@ function checkName(inputValue) {
 
 /**
  * @param {string} inputValue - valeur envoyer de l'input
- * @returns true | {string} en cas d'erreur
+ * @returns {string} en cas d'erreur
  */
 function checkEmail(inputValue) {
   sendError.textContent = "Veuillez enter une adresse email valide";
-  if (/[A-Z0-9._%+-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
-    clearForm();
-    return true;
+
+  if (/[A-Z0-9._-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
+    clearForm("error");
+    formValidation.push("email");
   } else {
     return divFormData[2].append(sendError);
   }
@@ -125,57 +129,75 @@ function checkEmail(inputValue) {
  * @returns  {string} en cas d'erreur
  */
 function checkBirthDate(inputValue) {
-  if (inputValue.length === 0) {
+  /**
+   * ^ = commence par ...
+   * (19|20)\d\d = Doit commancé par 19 ou 20 et se fini par 2 chiffres
+   * [-/.] = doit avoir en separation ces caractères : - / .
+   * [0-9] = doit contenir que des nombres entre 0 et 9
+   */
+  if (/^(19|20)\d\d+[-/.]+[0-9]+[-/.][0-9]/.test(inputValue.target.value)) {
+    clearForm("error");
+    formValidation.push("date");
+  } else {
     sendError.textContent = "Vous devez entrer votre date de naissance.";
     return divFormData[3].append(sendError);
-  } else {
-    formValidation.push(true);
   }
 }
+
 /**
- * @returns true | {string} en cas d'erreur
+ * @param {boolean} evt = par défault la valeur est false
+ * @returns  {string} en cas d'erreur
  */
-function checkRadio() {
-  const allRadios = document.querySelectorAll('input[name="location"]');
-  const disables = [];
-  for (const key in allRadios) {
-    const element = allRadios[key].checked;
-    if (element) {
-      formValidation.push(true);
-    } else {
-      disables.push(element);
-    }
-  }
-  if (disables.length === 12) {
+function checkRadio(evt = false) {
+  console.log(evt.target.checked);
+  if (evt.target.checked) {
+    console.log(evt.target.value);
+    formValidation.push(evt.target.checked);
+  } else {
+    console.log(evt);
     sendError.textContent = "Vous devez choisir une option.";
     return divFormData[5].append(sendError);
   }
 }
+
 function nbChallenge() {
   const goodValue = Number(nbgames.value);
-
   if (typeof goodValue === "number") {
-    formValidation.push(true);
+    formValidation.push("nbChallenge");
   } else {
     sendError.textContent = "Vous devez choisir une valeur numérique.";
     return divFormData[4].append(sendError);
   }
 }
 
-function checkCheckbox() {
+function checkCGU() {
   if (document.querySelector("#checkbox1").checked) {
-    formValidation.push(true);
+    formValidation.push("cgu");
   } else {
     sendError.textContent =
       "Vous devez vérifier que vous acceptez les termes et conditions.";
     return divFormData[6].append(sendError);
   }
 }
+
 function checkFormValidation() {
-  if (formValidation.length === 7) {
+  for (let index = 0; index < formValidation.length; index++) {
+    console.log(`${formValidation[index]} => ${typeof formValidation[index]}`);
+  }
+
+  const ville = formValidation.includes(true);
+  const cgu = formValidation.includes("cgu");
+
+  if (!ville) {
+    sendError.textContent = "Vous devez choisir une option.";
+    return divFormData[5].append(sendError);
+  }
+  if (!cgu) {
+    checkCGU();
+  }
+  if (cgu && ville) {
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
-    // voir removeChild()
     validationMessage();
   }
 }
