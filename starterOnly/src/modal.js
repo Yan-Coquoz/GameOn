@@ -15,18 +15,43 @@ const divFormData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelector(".close");
 const formulaire = document.querySelector("form");
 const submitBtn = document.querySelector(".btn-submit");
-const prenom = document.querySelector("#first");
-const nom = document.querySelector("#last");
-const email = document.querySelector("#email");
-const naissance = document.querySelector("#birthdate");
 const allRadios = document.querySelectorAll('input[name="location"]');
-const cgu = document.querySelector("#checkbox1");
-const nbGame = document.querySelector("#quantity");
-
+const inputs = {
+  prenom: document.querySelector("#first"),
+  nom: document.querySelector("#last"),
+  email: document.querySelector("#email"),
+  naissance: document.querySelector("#birthdate"),
+  nbGame: document.querySelector("#quantity"),
+  cgu: document.querySelector("#checkbox1"),
+};
 const formValidations = [];
 const sendError = document.createElement("span");
 sendError.classList.add("errorMsg");
 sendError.style.color = "red";
+// on boucle sur les differents ids
+for (const key in inputs) {
+  console.log(inputs[key]);
+  inputs[key].addEventListener("input", (evt) => {
+    console.log(evt);
+    switch (evt.target.id) {
+      case "first":
+        checkName(evt);
+        break;
+      case "last":
+        checkName(evt);
+        break;
+      case "email":
+        checkEmail(evt);
+        break;
+      case "naissance":
+        checkBirthDate(evt);
+        break;
+      case "quantity":
+        checkNbGame(evt);
+        break;
+    }
+  });
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -40,25 +65,11 @@ formulaire.addEventListener("submit", (evt) => {
   clearForm("error");
   checkFormValidation();
 });
-prenom.addEventListener("input", (evt) => {
-  checkName(evt);
-});
-nom.addEventListener("input", (evt) => {
-  checkName(evt);
-});
-email.addEventListener("input", (evt) => {
-  checkEmail(evt);
-});
-naissance.addEventListener("input", (evt) => {
-  checkBirthDate(evt);
-});
-nbGame.addEventListener("input", (evt) => {
-  checkNbGame(evt);
-});
+
 allRadios.forEach((radio) =>
   radio.addEventListener("input", (evt) => checkRadio(evt)),
 );
-cgu.addEventListener("click", checkCGU);
+inputs.cgu.addEventListener("click", checkCGU);
 
 // launch modal form
 function launchModal() {
