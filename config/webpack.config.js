@@ -1,4 +1,5 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const port = 3000;
 
@@ -13,6 +14,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
+
   module: {
     rules: [
       {
@@ -27,6 +29,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "gameon",
+      filename: "./starterOnly/index.html",
+    }),
+  ],
   devServer: {
     open: true,
     port,

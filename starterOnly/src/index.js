@@ -228,6 +228,7 @@ function checkFormValidation() {
     validationMessage();
   }
 }
+
 function validationMessage() {
   // creation d'element du DOM :
   // balise <p>

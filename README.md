@@ -157,11 +157,79 @@ module.exports = {
 ````
 
 1) Le serveur
-   
-Le serveur va nous permetre d'avoir un rendu côté navigateur après chaque modification de notre code.
 
-````javascript
+Le serveur va nous permetre d'avoir un rendu côté navigateur après chaque modification de notre code.
+Cette ligne de d'installation est variable seulement à partir de la version Webpack 5.
+
+````bash
 npm install -D webpack-dev-server
 ````
 
+`-D` = est l'équivalent de `--save-dev`
+
+A cette suite, il faut configuré le fichier package.json :
+
+````json
+ "scripts": {
+    "start": "webpack serve --config ./config/webpack.config.js",
+    "build": "webpack --config config/webpack.config.js",
+    "clean": "rm -rf config/dist",
+    "clean:all": "rm -rf config/dist node_modules package-lock.json",
+     },
+````
+
+Les scripts `clean` et `clean:all` permettre de repartir à zero pour le build ou bien pour réinstaller de nouvelles version des packages.
+
+6) Installation de plugin pour le HTML
+
+````bash
+npm install --save-dev html-webpack-plugin
+````
+
+Dans le webpack.config.js :
+````javascript
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const port = 3000;
+
+module.exports = {
+  mode: "production",
+  entry: {
+    polyfill: "babel-polyfill",
+    app: "./starterOnly/src/index.js",
+  },
+  output: {
+    filename: "[name].bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    clean: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "gameon",
+      filename: "./starterOnly/index.html",
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+    ],
+  },
+  devServer: {
+    open: true,
+    port,
+  },
+};
+
+````
+- [lien github](https://github.com/jantimon/html-webpack-plugin#options) pour la configuration du plugin
 </details>
