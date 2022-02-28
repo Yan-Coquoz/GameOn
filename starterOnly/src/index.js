@@ -19,9 +19,9 @@ const prenom = document.querySelector("#first");
 const nom = document.querySelector("#last");
 const email = document.querySelector("#email");
 const naissance = document.querySelector("#birthdate");
-const allRadios = document.querySelectorAll('input[name="location"]');
-const cgu = document.querySelector("#checkbox1");
 const nbGame = document.querySelector("#quantity");
+const cgu = document.querySelector("#checkbox1");
+const allRadios = document.querySelectorAll('input[name="location"]');
 
 const formValidations = [];
 const sendError = document.createElement("span");
@@ -97,20 +97,21 @@ function checkName(inputValue) {
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
   /* 
     [A-Z] = tout ce qui est alphabétique
-    [0-9] = tout ce qui est numérique
+    [0-9;:<>,?!*+/.] = tout ce qui est numérique et caracteres spéciaux
     {2,25}= doit contenir entre 2 et 25 caractères
     gi = global(la valeur complète) et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
     clearForm("error");
-    if (!/[0-9]/.test(inputValue.target.value)) {
+    if (!/[0-9;:<>,?!*+/.]/.test(inputValue.target.value)) {
       // si la condition est bonne, je supprime l'erreur
       clearForm("error");
       // je place dans le tableau la valeur de ce qui est valide
       formValidations.push(inputValue.target.name);
     } else {
       if (inputValue.target.id === "first") {
-        const error = (sendError.textContent = " Pas de valeurs numérique");
+        const error = (sendError.textContent =
+          " Pas de valeurs numérique ni de caractères spéciaux");
         return divFormData[0].appendChild(error);
       } else if (inputValue.target.id === "last") {
         const error = (sendError.textContent = " Et pas de valeurs numérique");
