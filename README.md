@@ -5,6 +5,10 @@
 3. Il n'y a aucune dépendance ; ✔
 4. Vous ne devez utiliser que du CSS personnalisé et du JavaScript pur, sans jQuery, Bootstrap ou autre librairie. ✔
 
+## Fermer la modale
+
+- Ajouter la fonctionnalités au bouton (X) ✔
+  
 ## Implémentation des données du formulaire
 
 - 1) Lier les labels aux entrées dans le HTML en utilisant les attributs "for" et "id" dans le code existant. Corriger le code HTML quand nécessaire. ✔
@@ -31,10 +35,10 @@ Les données doivent être saisies correctement :
 
 ## Après la validation
 
-Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")
+Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")  ✔
 
 ## Tests manuels
-
-- Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop.
+ 
+- Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop. ✔
 - Corriger les erreurs d'affichage existantes.
-Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes)
+Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes) ✔
