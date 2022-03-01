@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const port = 3000;
@@ -7,7 +8,7 @@ module.exports = {
   mode: "production",
   entry: {
     polyfill: "babel-polyfill",
-    app: "./starterOnly/src/index.js",
+    app: "./src/index.js",
   },
   output: {
     filename: "[name].bundle.js",
@@ -32,13 +33,15 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "gameon",
-      filename: "./starterOnly/index.html",
+      template: "public/index.html",
     }),
   ],
   devServer: {
     open: true,
     port,
+    hot: true,
   },
+  stats: "errors-warnings",
 };
 
 // open = ouverture du navigateur au lancement du serveur
