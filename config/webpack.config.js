@@ -41,6 +41,7 @@ module.exports = {
     port,
     hot: true,
   },
+  devtool: false,
   stats: "errors-warnings",
 };
 
