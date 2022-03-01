@@ -369,7 +369,7 @@ input {
   font-size: 16px;
 }
 .hero-section {
-  min-height: 93vh;
+  min-height: 80vh;
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -384,7 +384,8 @@ input {
   color: #fff;
   position: relative;
   text-align: left;
-  min-width: 424px;
+  justify-items: center;
+  align-items: center;
 }
 .hero-content::after {
   content: "";
