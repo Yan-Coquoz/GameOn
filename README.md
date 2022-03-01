@@ -38,7 +38,7 @@ Les données doivent être saisies correctement :
 Après une validation réussie, inclure un message de confirmation de la soumission réussie pour l'utilisateur (ex. "Merci ! Votre réservation a été reçue.")  ✔
 
 ## Tests manuels
- 
+
 - Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop. ✔
 - Corriger les erreurs d'affichage existantes.
 Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes) ✔
