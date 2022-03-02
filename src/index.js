@@ -6,18 +6,48 @@ const divFormData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelector(".close");
 const formulaire = document.querySelector("form");
 const submitBtn = document.querySelector(".btn-submit");
-const prenom = document.querySelector("#first");
-const nom = document.querySelector("#last");
-const email = document.querySelector("#email");
-const naissance = document.querySelector("#birthdate");
+const inputs = {
+  prenom: document.querySelector("#first"),
+  nom: document.querySelector("#last"),
+  email: document.querySelector("#email"),
+  naissance: document.querySelector("#birthdate"),
+  nbGame: document.querySelector("#quantity"),
+  cgu: document.querySelector("#checkbox1"),
+};
 const allRadios = document.querySelectorAll('input[name="location"]');
-const cgu = document.querySelector("#checkbox1");
-const nbGame = document.querySelector("#quantity");
 
 const formValidations = []; // gestions des validations
 const sendError = document.createElement("span"); // span pour affiché le msg d'erreur
 sendError.classList.add("errorMsg"); // affectation d'une classe
 sendError.style.color = "red"; // et un style par defaut
+inputs.cgu.setAttribute("required", ""); // je place l'attribut required dans la checkbox
+inputs.cgu.setAttribute("checked", ""); // je place l'attribut required dans la checkbox
+
+// on boucle sur les differents ids
+for (const key in inputs) {
+  inputs[key].addEventListener("input", (evt) => {
+    switch (evt.target.id) {
+      case "first":
+        checkName(evt);
+        break;
+      case "last":
+        checkName(evt);
+        break;
+      case "email":
+        checkEmail(evt);
+        break;
+      case "birthdate":
+        checkBirthDate(evt);
+        break;
+      case "quantity":
+        checkNbGame(evt);
+        break;
+      case "checkbox1":
+        checkCGU(evt);
+        break;
+    }
+  });
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -28,32 +58,17 @@ formulaire.addEventListener("submit", (evt) => {
   // arreter le comportement par defaut du formulaire
   evt.preventDefault();
   // je nettoie les valeurs du formulaires (si il y a eu des erreurs)
-  clearForm("error");
+  clearErrorValue("error");
   checkFormValidation();
 });
-prenom.addEventListener("input", (evt) => {
-  checkName(evt);
-});
-nom.addEventListener("input", (evt) => {
-  checkName(evt);
-});
-email.addEventListener("input", (evt) => {
-  checkEmail(evt);
-});
-naissance.addEventListener("input", (evt) => {
-  checkBirthDate(evt);
-});
-nbGame.addEventListener("input", (evt) => {
-  checkNbGame(evt);
-});
+
 allRadios.forEach((radio) =>
   radio.addEventListener("input", (evt) => checkRadio(evt)),
 );
-cgu.addEventListener("click", checkCGU);
 
 // launch modal form
 function launchModal() {
-  clearForm("all");
+  clearErrorValue("all");
   modalbg.style.display = "block";
 }
 
@@ -73,7 +88,7 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-function clearForm(value) {
+function clearErrorValue(value) {
   switch (value) {
     case "form":
       // supprime toutes les valeurs du tableaux
@@ -105,10 +120,10 @@ function checkName(inputValue) {
     gi = global(la valeur complète) et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
-    clearForm("error");
+    clearErrorValue("error");
     if (!/[0-9;:<>,?!*+/.]/.test(inputValue.target.value)) {
       // si la condition est bonne, je supprime le msg d'erreur
-      clearForm("error");
+      clearErrorValue("error");
       // je place dans le tableau la valeur de ce qui est valide
       formValidations.push(inputValue.target.name);
     } else {
@@ -138,7 +153,7 @@ function checkEmail(inputValue) {
   sendError.textContent = "Veuillez enter une adresse email valide";
 
   if (/[A-Z0-9._-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
-    clearForm("error");
+    clearErrorValue("error");
     formValidations.push("email");
   } else {
     return divFormData[2].appendChild(sendError);
@@ -157,7 +172,7 @@ function checkBirthDate(inputValue) {
    * [0-9] = doit contenir que des nombres entre 0 et 9
    */
   if (/^(19|20)\d\d+[-/.]+[0-9]+[-/.][0-9]/.test(inputValue.target.value)) {
-    clearForm("error");
+    clearErrorValue("error");
     formValidations.push("date");
   } else {
     sendError.textContent = "Vous devez entrer votre date de naissance.";
@@ -167,7 +182,7 @@ function checkBirthDate(inputValue) {
 
 function checkNbGame(evt) {
   const goodValue = Number(evt.target.value);
-  console.log(typeof goodValue);
+
   if (typeof goodValue === "number") {
     formValidations.push("nbChallenge");
   } else {
@@ -189,14 +204,18 @@ function checkRadio(evt = false) {
   }
 }
 
-function checkCGU() {
+function checkCGU(evt = true) {
+  // Je cible le 1er label pres de l'id cgu
   const labelCgu = document.querySelector("#cgu").nextSibling;
-
-  if (cgu.checked) {
-    clearForm("error");
+  console.log("c'est checked ", evt);
+  if (evt.target.checked) {
+    clearErrorValue("error");
     formValidations.push("cgu");
   } else {
-    formValidations.pop("cgu");
+    const isCgu = formValidations.includes("cgu");
+    if (isCgu) {
+      formValidations.pop("cgu");
+    }
     sendError.style.display = "inline-blocK";
     sendError.textContent =
       "Vous devez vérifier que vous acceptez les termes et conditions.";
@@ -205,32 +224,32 @@ function checkCGU() {
 }
 
 function checkFormValidation() {
-  // for (let index = 0; index < formValidations.length; index++) {
-  //   console.log(
-  //     `${formValidations[index]} => ${typeof formValidations[index]}`,
-  //   );
-  // }
-
+  for (let index = 0; index < formValidations.length; index++) {
+    console.log(
+      `${formValidations[index]} => ${typeof formValidations[index]}`,
+    );
+  }
   // je check si les valeurs sont présente dans tableau des validations
   const ville = formValidations.includes(true);
-  const cgu = formValidations.includes("cgu");
-  // si elles ne sont pas présentes,
+  const isCgu = formValidations.includes("cgu");
+  // si elles ne sont pas présentes, je relance la fonction
   if (!ville) {
     checkRadio();
   }
-  if (!cgu) {
+  if (!isCgu) {
     checkCGU();
   }
-  if (cgu && ville) {
+  if (isCgu && ville) {
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
 
     // je vide le tabeau des validation et efface les MSGs d'erreur
-    clearForm("all");
+    clearErrorValue("all");
     // MSG de validation de formulaire
     validationMessage();
   }
 }
+
 function validationMessage() {
   // creation d'element du DOM :
   // balise <p>
