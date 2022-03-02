@@ -1,11 +1,17 @@
+const { size } = require("lodash");
+
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalContent = document.querySelector(".content");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const divFormData = document.querySelectorAll(".formData");
+// btn de fermeture de la modale
 const closeBtn = document.querySelector(".close");
+// la balise du formulaire
 const formulaire = document.querySelector("form");
-const submitBtn = document.querySelector(".btn-submit");
+// btn de validation de formulaire
+const submitFormBtn = document.querySelector(".btn-submit");
+// liste des inputs utilisant le même type d'event
 const inputs = {
   prenom: document.querySelector("#first"),
   nom: document.querySelector("#last"),
@@ -14,18 +20,26 @@ const inputs = {
   nbGame: document.querySelector("#quantity"),
   cgu: document.querySelector("#checkbox1"),
 };
+// liste des inputs de type radio
 const allRadios = document.querySelectorAll('input[name="location"]');
-
-const formValidations = []; // gestions des validations
-const sendError = document.createElement("span"); // span pour affiché le msg d'erreur
-sendError.classList.add("errorMsg"); // affectation d'une classe
-sendError.style.color = "red"; // et un style par defaut
-inputs.cgu.setAttribute("required", ""); // je place l'attribut required dans la checkbox
-inputs.cgu.setAttribute("checked", ""); // je place l'attribut required dans la checkbox
+// gestions des validations
+const formValidations = [];
+// span pour affiché le msg d'erreur
+const sendError = document.createElement("span");
+// affectation d'une classe
+sendError.classList.add("errorMsg");
+// et un style par defaut
+sendError.style.color = "red";
+// je place l'attribut required dans la checkbox
+inputs.cgu.setAttribute("required", "");
+// je place l'attribut required dans la checkbox
+inputs.cgu.setAttribute("checked", "");
 
 // on boucle sur les differents ids
 for (const key in inputs) {
   inputs[key].addEventListener("input", (evt) => {
+    // on va regarder mon id
+    // selon son appellation, on le dirige vers la bonne fonction.
     switch (evt.target.id) {
       case "first":
         checkName(evt);
@@ -61,7 +75,6 @@ formulaire.addEventListener("submit", (evt) => {
   clearErrorValue("error");
   checkFormValidation();
 });
-
 allRadios.forEach((radio) =>
   radio.addEventListener("input", (evt) => checkRadio(evt)),
 );
@@ -73,7 +86,7 @@ function launchModal() {
 }
 
 // Les Fonctions
-
+// fonction qui gere le btn de la barre de navigation
 function editNav() {
   var topNav = document.getElementById("myTopnav");
   if (topNav.className === "topnav") {
@@ -114,10 +127,10 @@ function checkName(inputValue) {
   sendError.textContent =
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
   /* 
-    [A-Z] = tout ce qui est alphabétique
-    [0-9;:<>,?!*+/.] = tout ce qui est numérique ni de caractères spéciaux
-    {2,25}= doit contenir entre 2 et 25 caractères
-    gi = global(la valeur complète) et case insensitive 
+    [A-Z]             = Valeurs alphabétique
+    [0-9;:<>,?!*+/.]  = Valeur numérique et caractères spéciaux
+    {2,25}            = Doit contenir entre 2 et 25 caractères
+    gi                = Global(la valeur complète) et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
     clearErrorValue("error");
@@ -151,7 +164,14 @@ function checkName(inputValue) {
  */
 function checkEmail(inputValue) {
   sendError.textContent = "Veuillez enter une adresse email valide";
-
+  /**
+   * [A-Z0-9._-] = Accept les valeurs alphanumerique ainsi que le . _ -
+   * +@          = Concatenation avec l'@
+   * [A-Z0-9-]   = Des valeurs alphanumérique
+   * +.          = On concatene avec l'.
+   * [A-Z]{2,4}  = Valeurs alphabétique, entre 2 et 4 caractères
+   * gi          = Globale et insensible à la casse
+   */
   if (/[A-Z0-9._-]+@[A-Z0-9-]+.[A-Z]{2,4}/gi.test(inputValue.target.value)) {
     clearErrorValue("error");
     formValidations.push("email");
@@ -167,9 +187,9 @@ function checkEmail(inputValue) {
 function checkBirthDate(inputValue) {
   /**
    * ^ = commence par ...
-   * (19|20)\d\d = Doit commancé par 19 ou 20 et se fini par 2 chiffres
-   * [-/.] = doit avoir en separation ces caractères : - / .
-   * [0-9] = doit contenir que des nombres entre 0 et 9
+   * (19|20)\d\d  = Doit commancé par 19 ou 20 et se fini par 2 chiffres
+   * [-/.]        = Doit avoir en separation ces caractères : - / .
+   * [0-9]        = Doit contenir que des nombres entre 0 et 9
    */
   if (/^(19|20)\d\d+[-/.]+[0-9]+[-/.][0-9]/.test(inputValue.target.value)) {
     clearErrorValue("error");
@@ -181,8 +201,9 @@ function checkBirthDate(inputValue) {
 }
 
 function checkNbGame(evt) {
+  // Je converti la valeur de type string à Number
   const goodValue = Number(evt.target.value);
-
+  // si elle est bien converti, la valeur sera true
   if (typeof goodValue === "number") {
     formValidations.push("nbChallenge");
   } else {
@@ -205,15 +226,17 @@ function checkRadio(evt = false) {
 }
 
 function checkCGU(evt = true) {
-  // Cible le 1er label pres de l'id cgu
+  // Cible le 1er label près de l'id cgu
   const labelCgu = document.querySelector("#cgu").nextSibling;
   // si la valeur est présente
   if (evt.target.checked) {
     clearErrorValue("error");
     formValidations.push("cgu");
   } else {
+    // je vérifie si la valeur est présente dan le tableau
     const isCgu = formValidations.includes("cgu");
     if (isCgu) {
+      // sil elle est présente, je la supprime.
       formValidations.pop("cgu");
     }
     sendError.style.display = "inline-blocK";
@@ -229,6 +252,7 @@ function checkFormValidation() {
   //     `${formValidations[index]} => ${typeof formValidations[index]}`,
   //   );
   // }
+
   // je check si les valeurs sont présente dans tableau des validations
   const ville = formValidations.includes(true);
   const isCgu = formValidations.includes("cgu");
@@ -242,7 +266,6 @@ function checkFormValidation() {
   if (isCgu && ville) {
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
-
     // je vide le tabeau des validation et efface les MSGs d'erreur
     clearErrorValue("all");
     // MSG de validation de formulaire
