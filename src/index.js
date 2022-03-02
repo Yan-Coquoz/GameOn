@@ -1,12 +1,3 @@
-function editNav() {
-  var topNav = document.getElementById("myTopnav");
-  if (topNav.className === "topnav") {
-    topNav.className += " responsive";
-  } else {
-    topNav.className = "topnav";
-  }
-}
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalContent = document.querySelector(".content");
@@ -23,10 +14,10 @@ const allRadios = document.querySelectorAll('input[name="location"]');
 const cgu = document.querySelector("#checkbox1");
 const nbGame = document.querySelector("#quantity");
 
-const formValidations = [];
-const sendError = document.createElement("span");
-sendError.classList.add("errorMsg");
-sendError.style.color = "red";
+const formValidations = []; // gestions des validations
+const sendError = document.createElement("span"); // span pour affiché le msg d'erreur
+sendError.classList.add("errorMsg"); // affectation d'une classe
+sendError.style.color = "red"; // et un style par defaut
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -34,7 +25,7 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 closeBtn.addEventListener("click", closeModal);
 // écoute du formulaire
 formulaire.addEventListener("submit", (evt) => {
-  // arreter le comportement par defaut du bouton type submit
+  // arreter le comportement par defaut du formulaire
   evt.preventDefault();
   // je nettoie les valeurs du formulaires (si il y a eu des erreurs)
   clearForm("error");
@@ -65,6 +56,18 @@ function launchModal() {
   clearForm("all");
   modalbg.style.display = "block";
 }
+
+// Les Fonctions
+
+function editNav() {
+  var topNav = document.getElementById("myTopnav");
+  if (topNav.className === "topnav") {
+    topNav.className += " responsive";
+  } else {
+    topNav.className = "topnav";
+  }
+}
+
 // close modal form
 function closeModal() {
   modalbg.style.display = "none";
@@ -97,32 +100,32 @@ function checkName(inputValue) {
     "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
   /* 
     [A-Z] = tout ce qui est alphabétique
-    [0-9] = tout ce qui est numérique
+    [0-9;:<>,?!*+/.] = tout ce qui est numérique ni de caractères spéciaux
     {2,25}= doit contenir entre 2 et 25 caractères
     gi = global(la valeur complète) et case insensitive 
     */
   if (/[A-Z]{2,25}/gi.test(inputValue.target.value)) {
     clearForm("error");
-    if (!/[0-9]/.test(inputValue.target.value)) {
-      // si la condition est bonne, je supprime l'erreur
+    if (!/[0-9;:<>,?!*+/.]/.test(inputValue.target.value)) {
+      // si la condition est bonne, je supprime le msg d'erreur
       clearForm("error");
       // je place dans le tableau la valeur de ce qui est valide
       formValidations.push(inputValue.target.name);
     } else {
+      const error = (sendError.textContent =
+        "Pas de valeurs numérique ni de caractères spéciaux");
       if (inputValue.target.id === "first") {
-        const error = (sendError.textContent = " Pas de valeurs numérique");
         return divFormData[0].appendChild(error);
       } else if (inputValue.target.id === "last") {
-        const error = (sendError.textContent = " Et pas de valeurs numérique");
         return divFormData[1].appendChild(error);
       }
     }
   } else {
     // condition pour le placement du message d'erreur
     if (inputValue.target.id === "first") {
-      return divFormData[0].append(sendError);
+      return divFormData[0].appendChild(sendError);
     } else {
-      return divFormData[1].append(sendError);
+      return divFormData[1].appendChild(sendError);
     }
   }
 }
@@ -138,7 +141,7 @@ function checkEmail(inputValue) {
     clearForm("error");
     formValidations.push("email");
   } else {
-    return divFormData[2].append(sendError);
+    return divFormData[2].appendChild(sendError);
   }
 }
 
@@ -158,7 +161,7 @@ function checkBirthDate(inputValue) {
     formValidations.push("date");
   } else {
     sendError.textContent = "Vous devez entrer votre date de naissance.";
-    return divFormData[3].append(sendError);
+    return divFormData[3].appendChild(sendError);
   }
 }
 
@@ -169,7 +172,7 @@ function checkNbGame(evt) {
     formValidations.push("nbChallenge");
   } else {
     sendError.textContent = "Vous devez choisir une valeur numérique.";
-    return divFormData[4].append(sendError);
+    return divFormData[4].appendChild(sendError);
   }
 }
 
@@ -180,7 +183,7 @@ function checkNbGame(evt) {
 function checkRadio(evt = false) {
   if (!evt) {
     sendError.textContent = "Vous devez choisir une option.";
-    return divFormData[5].append(sendError);
+    return divFormData[5].appendChild(sendError);
   } else if (evt.target.checked) {
     formValidations.push(evt.target.checked);
   }
@@ -221,6 +224,7 @@ function checkFormValidation() {
   if (cgu && ville) {
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
+
     // je vide le tabeau des validation et efface les MSGs d'erreur
     clearForm("all");
     // MSG de validation de formulaire
