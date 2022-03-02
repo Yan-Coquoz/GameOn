@@ -205,9 +205,9 @@ function checkRadio(evt = false) {
 }
 
 function checkCGU(evt = true) {
-  // Je cible le 1er label pres de l'id cgu
+  // Cible le 1er label pres de l'id cgu
   const labelCgu = document.querySelector("#cgu").nextSibling;
-  console.log("c'est checked ", evt);
+  // si la valeur est présente
   if (evt.target.checked) {
     clearErrorValue("error");
     formValidations.push("cgu");
@@ -224,11 +224,11 @@ function checkCGU(evt = true) {
 }
 
 function checkFormValidation() {
-  for (let index = 0; index < formValidations.length; index++) {
-    console.log(
-      `${formValidations[index]} => ${typeof formValidations[index]}`,
-    );
-  }
+  // for (let index = 0; index < formValidations.length; index++) {
+  //   console.log(
+  //     `${formValidations[index]} => ${typeof formValidations[index]}`,
+  //   );
+  // }
   // je check si les valeurs sont présente dans tableau des validations
   const ville = formValidations.includes(true);
   const isCgu = formValidations.includes("cgu");
