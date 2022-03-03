@@ -1,6 +1,6 @@
 # Projet04GameOn
 
-1. Forkez ce repo ; ✔ 
+1. Forkez ce repo ; ✔
 2. Il est conseillé d'utiliser VisualStudio Code **✔** et vous pouvez utiliser Docker, mais ce n'est pas obligatoire ;
 3. Il n'y a aucune dépendance ; ✔
 4. Vous ne devez utiliser que du CSS personnalisé et du JavaScript pur, sans jQuery, Bootstrap ou autre librairie. ✔
@@ -42,6 +42,5 @@ Après une validation réussie, inclure un message de confirmation de la soumiss
 - Visualiser et tester l'interface utilisateur dans les dernières versions de Chrome et de Firefox, ainsi que dans les versions mobile et desktop. ✔
 - Corriger les erreurs d'affichage existantes.
 Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes) ✔
-
 
 [⬆ Haut de page](#projet04gameon)

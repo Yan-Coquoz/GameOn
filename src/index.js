@@ -1,5 +1,3 @@
-const { size } = require("lodash");
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalContent = document.querySelector(".content");
@@ -22,6 +20,7 @@ const inputs = {
 };
 // liste des inputs de type radio
 const allRadios = document.querySelectorAll('input[name="location"]');
+
 // gestions des validations
 const formValidations = [];
 // span pour affiché le msg d'erreur
@@ -230,9 +229,17 @@ function checkCGU(evt = true) {
   const labelCgu = document.querySelector("#cgu").nextSibling;
   // si la valeur est présente
   if (evt.target.checked) {
+    // j'hote l'attribut
+    submitFormBtn.removeAttribute("disabled");
+    // et replace la bonne couleur au btn
+    submitFormBtn.style.backgroundColor = "#fe142f";
     clearErrorValue("error");
     formValidations.push("cgu");
   } else {
+    // Si l'on ne valide pas les CGUs le bouton n'est plus fonctionnel
+    submitFormBtn.setAttribute("disabled", "");
+    // et change de couleur.
+    submitFormBtn.style.backgroundColor = "darkred";
     // je vérifie si la valeur est présente dan le tableau
     const isCgu = formValidations.includes("cgu");
     if (isCgu) {
