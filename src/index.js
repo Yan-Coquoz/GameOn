@@ -186,7 +186,7 @@ function checkEmail(inputValue) {
 function checkBirthDate(inputValue) {
   /**
    * ^ = commence par ...
-   * (19|20)\d\d  = Doit commancé par 19 ou 20 et se fini par 2 chiffres
+   * (19|20)\d\d  = Doit commencer par 19 ou 20 et se fini par 2 chiffres
    * [-/.]        = Doit avoir en separation ces caractères : - / .
    * [0-9]        = Doit contenir que des nombres entre 0 et 9
    */

@@ -43,4 +43,8 @@ Après une validation réussie, inclure un message de confirmation de la soumiss
 - Corriger les erreurs d'affichage existantes.
 Tester toutes les fonctionnalités des boutons et des entrées de formulaire (tester les valeurs correctes et incorrectes) ✔
 
+Site pour le test des regex :
+
+- [regexr](https://regexr.com/)
+
 [⬆ Haut de page](#projet04gameon)
