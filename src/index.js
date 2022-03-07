@@ -139,12 +139,12 @@ function checkName(inputValue) {
       // je place dans le tableau la valeur de ce qui est valide
       formValidations.push(inputValue.target.name);
     } else {
-      const error = (sendError.textContent =
-        "Pas de valeurs numérique ni de caractères spéciaux");
+      sendError.textContent =
+        "Pas de valeurs numérique ni de caractères spéciaux";
       if (inputValue.target.id === "first") {
-        return divFormData[0].appendChild(error);
+        return divFormData[0].appendChild(sendError);
       } else if (inputValue.target.id === "last") {
-        return divFormData[1].appendChild(error);
+        return divFormData[1].appendChild(sendError);
       }
     }
   } else {
@@ -227,6 +227,7 @@ function checkRadio(evt = false) {
 function checkCGU(evt = true) {
   // Cible le 1er label près de l'id cgu
   const labelCgu = document.querySelector("#cgu").nextSibling;
+
   // si la valeur est présente
   if (evt.target.checked) {
     // j'hote l'attribut
