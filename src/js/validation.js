@@ -11,7 +11,7 @@ function validationMessage() {
   message.classList.add("message");
   // ajout du texte du bouton et d'une classe
   btn.textContent = "Fermer";
-  btn.classList.add("button");
+  btn.classList.add("btn-submit");
   // style de la modale
   modalContent.style.display = "flex";
   modalContent.style.flexDirection = "column";

@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>Reservation</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="./public/css/modal.css" />
+  <link rel="stylesheet" href="./css/modal.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=DM+Sans" rel="stylesheet" />
 </head>
@@ -17,8 +17,8 @@
     </div>
     <div class="main-navbar">
 
-      <a href="#" class="active"><span>Accueil</span></a>
-      <a href="#"><span>Détails de l'évènement</span></a>
+      <a href="#" class="active"><span>Détails de l'évènement</span></a>
+
       <a href="#"><span>À propos</span></a>
       <a href="#"><span>Contact</span></a>
       <a href="#"><span>Évènements passés</span></a>
@@ -60,30 +60,36 @@
             <div class="formData">
               <label for="first">Prénom</label>
               <br>
-              <input class="text-control" type="text" id="first" name="first" required autofocus />
+              <input class="text-control" type="text" id="first" name="first" />
               <br>
+              <span class="error-msg"></span>
             </div>
             <div class="formData">
               <label for="last">Nom</label>
               <br>
-              <input class="text-control" type="text" id="last" name="last" required />
+              <input class="text-control" type="text" id="last" name="last" />
               <br>
+              <span class="error-msg"></span>
             </div>
             <div class="formData">
               <label for="email">E-mail</label>
               <br>
               <input class="text-control" type="email" id="email" name="email" />
               <br>
+              <span class="error-msg"></span>
             </div>
             <div class="formData">
               <label for="birthdate">Date de naissance</label>
               <br>
-              <input class="text-control" type="date" id="birthdate" name="birthdate" required />
+              <input class="text-control" type="date" id="birthdate" name="birthdate" />
               <br>
+              <span class="error-msg"></span>
             </div>
             <div class="formData">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
-              <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99" required>
+              <input type="text" class="text-control" id="quantity" name="quantity" min="0" max="99">
+              <br>
+              <span class="error-msg"></span>
             </div>
             <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
             <!-- input radio -->
@@ -112,6 +118,7 @@
               <label class="checkbox-label" for="location6">
                 <span class="checkbox-icon"></span>
                 Portland</label>
+              <span class="error-msg"></span>
             </div>
             <!-- input checkbox -->
             <div class="formData">
@@ -120,7 +127,7 @@
                 <span class="checkbox-icon"></span>
                 J'ai lu et accepté les conditions d'utilisation.
               </label>
-
+              <span class="error-msg"></span>
               <br>
               <input class="checkbox-input" type="checkbox" id="checkbox2" />
               <label class="checkbox2-label" for="checkbox2">
@@ -141,8 +148,8 @@
       Copyright 2014 - 2022, GameOn Inc.
     </p>
   </footer>
-  <script src="./src/index.js"></script>
-  <script src="./src/validation.js"></script>
+  <script src="/src/js/index.js"></script>
+  <script src="/src/js/validation.js"></script>
 </body>
 
 </html>
