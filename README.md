@@ -47,17 +47,19 @@ Site pour le test des regex :
 
 - [regexr](https://regexr.com/)
 
+
+## **compte rendu soutenance**
 Liste des corrections à apporter sous 48h (avant 11h00 le 09/03/2022) suite à la soutenance d'aujourd'hui :
 
-1-Points à retravailler pour valider ce projet :
+1-Points à retravailler pour valider ce projet:
 
  Desktop :
 
-- Supprimer le comportement par défaut du formulaire pour ne pas avoir en doublon les messages d'erreur de saisie par défaut du formulaire
+- Supprimer le comportement par défaut du formulaire pour ne pas avoir en doublon les messages d'erreur de saisie par défaut du formulaire ✔
 
-- Lorsque l'on saisit "d" dans l'input "prénom" puis que l'on continue à remplir le formulaire et que l'on clique sur "c'est partie", le message d'erreur ne s'affiche pas puis lorsque l'on ajoute "david" à la place de "d" dans l'input prénom et que l'on clique de nouveau sur "c'est partie", le formulaire n'affiche pas la page de confirmation.
+- Lorsque l'on saisit "d" dans l'input "prénom" puis que l'on continue à remplir le formulaire et que l'on clique sur "c'est partie", le message d'erreur ne s'affiche pas puis lorsque l'on ajoute "david" à la place de "d" dans l'input prénom et que l'on clique de nouveau sur "c'est partie", le formulaire n'affiche pas la page de confirmation. ✔
 
-- Les inputs n'ont pas de bordure rouge lorsque le message d'erreur s'affiche comme sur la maquette
+- Les inputs n'ont pas de bordure rouge lorsque le message d'erreur s'affiche comme sur la maquette ✔
 - Supprimer le bouton "Accueil" pour être conforme à la maquette ✔
 
 Sur la page de confirmation :
@@ -83,7 +85,7 @@ Architecture du projet :
 
 Code :
 
-- Nettoyer les commentaires ou codes commentés, non utilisés et ajouter les commentaires avant le bloc de code à commenter
-- Tester le code au validateur W3C
+- Nettoyer les commentaires ou codes commentés, non utilisés et ajouter les commentaires avant le bloc de code à commenter ✔
+- Tester le code au validateur W3C ✔
 
 [⬆ Haut de page](#projet04gameon)

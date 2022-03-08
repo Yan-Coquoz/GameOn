@@ -3,7 +3,8 @@
   --font-slab: var(--font-default);
   --modal-duration: 0.8s;
 }
-* {
+*,
+p {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -390,7 +391,7 @@ input {
   justify-items: center;
   align-items: center;
 }
-/* .hero-content::after {
+.hero-content::after {
   content: "";
   width: 100%;
   height: 100%;
@@ -398,7 +399,7 @@ input {
   position: absolute;
   right: -80px;
   top: 0;
-} */
+}
 .hero-content > * {
   position: relative;
   z-index: 1;
@@ -409,7 +410,6 @@ input {
   white-space: nowrap;
 }
 .hero-text {
-  width: 40%;
   font-weight: normal;
   margin-top: 57px;
   padding: 0;
@@ -447,6 +447,7 @@ input {
 .contain-error:focus-within input,
 .contain-error.input-error input {
   border: 2px solid red;
+  -moz-border: 2px solid red;
 }
 
 span.error-msg {
