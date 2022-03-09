@@ -190,11 +190,15 @@ function checkBirthDate(inputValue) {
  */
 function checkNbGame(evt = false) {
   sendError[4].textContent = "Vous devez choisir une valeur numérique.";
+  // si evt est differant de false (donc arrive de l'ecouteur)
   if (evt !== false) {
+    // je test que la valeur soit bien numerique entre 1 et 2 chiffre
     if (/^[0-9]{1,2}/.test(evt.target.value)) {
+      // je supprime les classes d'erreur
       evt.target.parentNode.classList.remove("input-error");
       sendError[4].classList.remove("visible");
       divFormData[4].classList.remove("contain-error");
+      // et je push une validation
       formValidations.push("nbChallenge");
     } else {
       divFormData[4].classList.add("contain-error");
@@ -307,6 +311,10 @@ function checkFormValidation() {
     isTown &&
     (isCgu || cgu.checked === true)
   ) {
+    // Je vide les champs des inputs
+    for (const key in inputs) {
+      inputs[key].value = "";
+    }
     // je supprime le formulaire s'il remplit les conditions
     formulaire.innerHTML = "";
     //je supprimes les données du tableau
